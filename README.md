@@ -74,5 +74,7 @@ interface FromRetrieve {
   from: (obj: any) => any;
 }
 
-function retrieve(path: string, defaultValue?: any, config?: RetrieveConfig): FromRetrieve
+function retrieve(path: string,
+                  defaultValue?: any, 
+                  config?: RetrieveConfig): FromRetrieve
 ```
