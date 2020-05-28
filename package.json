@@ -4,7 +4,7 @@
     "Carl-Johan Kihl for writing https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c"
   ],
   "name": "object-retreive",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Safely retrieve deeply nested values from an object.",
   "license": "BSD-3-Clause",
   "main": "dist/index.js",
@@ -24,7 +24,7 @@
     "build": "tsc",
     "prepare": "npm run build",
     "prepublishOnly": "npm run test",
-    "version": "npm run format && git add -A src",
+    "version": "git add -A src",
     "postversion": "git push && git push --tags"
   },
   "files": [
