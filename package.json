@@ -1,14 +1,18 @@
 {
   "contributors": [
     "Owen Wattenmaker",
-    "Carl-Johan Kihl for writing https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c",
+    "Carl-Johan Kihl for writing https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c"
   ],
-  "name": "retreive",
+  "name": "object-retreive",
   "version": "0.1.0",
   "description": "Safely retrieve deeply nested values from an object.",
   "license": "BSD-3-Clause",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "directory": "git@github.com:solvhealth/object-retrive.git"
+  },
   "devDependencies": {
     "@types/jest": "^25.2.3",
     "jest": "^25.5.4",

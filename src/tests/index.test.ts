@@ -9,7 +9,8 @@ const TEST_OBJ_1 = {
     bar: [
       { baz: ':)'}
     ]
-  }
+  },
+  notDefined: undefined,
 };
 
 const TEST_OBJ_2 = {
@@ -58,5 +59,21 @@ test('dynamic paths work', function () {
     const expectedVal = i === 4 ? undefined : `${i}elm`;
     expect(retrieve(`multi.${i}.obj${i}`).from(TEST_OBJ_2)).toBe(expectedVal);
   }
+})
+
+test('overrideUndefined config option works', function () {
+  expect(retrieve('notDefined', 'hello').from(TEST_OBJ_1)).toBe(undefined);
+  expect(retrieve('notDefined', 'hello', { overrideUndefined: true }).from(TEST_OBJ_1)).toBe('hello');
+})
+
+test('doesn\'t error on non object object values being passed in', function () {
+  expect(retrieve('hello.world').from(undefined)).toBe(undefined);
+  expect(retrieve('hello.world', 'foo').from(undefined)).toBe('foo');
+  expect(retrieve('hello.world').from(null)).toBe(undefined);
+  expect(retrieve('hello.world', 'foo').from(null)).toBe('foo');
+  expect(retrieve('hello.world').from('objectString')).toBe(undefined);
+  expect(retrieve('hello.world', 'foo').from('objectString')).toBe('foo');
+  expect(retrieve('hello.world').from(5)).toBe(undefined);
+  expect(retrieve('hello.world', 'foo').from(5)).toBe('foo');
 })
 
