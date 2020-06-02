@@ -27,6 +27,7 @@ export default function retrieve(path: string, defaultValue?: any, config?: Retr
       retVal = retVal[key];
     }
 
+    // TODO: override for all falsy values
     if (retVal === undefined && config?.overrideUndefined)
       retVal = defaultValue;
 
