@@ -75,5 +75,6 @@ test('doesn\'t error on non object object values being passed in', function () {
   expect(retrieve('hello.world', 'foo').from('objectString')).toBe('foo');
   expect(retrieve('hello.world').from(5)).toBe(undefined);
   expect(retrieve('hello.world', 'foo').from(5)).toBe('foo');
+  expect(retrieve('hello.world.bar', 'foo').from(5)).toBe('foo');
 })
 
