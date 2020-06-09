@@ -46,28 +46,41 @@ retrieve('hello.world.foo').from(myObj)
 You may pass in a default value that returns if the given nested object does not have the
 requested property.
 ```typescript
-retrieve('hello.world.baz', 'myDefaultVal').from(myObj);
+retrieve('hello.world.baz', 'myDefaultVal').from(myObj)
 >>> 'myDefaultVal'
 ```
 
 In the event that the object contains a key with value `undefined`, it will return `undefined`
 even if a default value is provided. If you wish to override this behavior you may pass in
-an optional config object, containing the `overrideUndefined` property:
+an optional config object, containing the `defaultOnUndefined` property:
 ```typescript
-const myObj = { hello: { world: undefined } };
+const myObj = { hello: { world: undefined } }
 
-retrieve('hello.world', 'mario').from(myObj);
+retrieve('hello.world', 'mario').from(myObj)
 >>> undefined
 
-retrieve('hello.world', 'mario', { overrideUndefined: true }).from(myObj);
+retrieve('hello.world', 'mario', { defaultOnUndefined: true }).from(myObj)
 >>> 'mario'
+```
+
+`defaultOnFalsy` works in much the same way as `defaultOnUndefined`, except it will return default
+on all falsy values, not just undefined. `defaultOnUndefined` will override `defaultOnFalsy`.
+
+You my pass a `separator` to the config which will allow you to choose the character that the path
+splits on.
+
+```typescript
+retrieve('lets👏get👏this👏bread', '🥖', { separator: '👏' }).from({ bread: '🍞'})
 ```
 
 ## API
 ``` typescript
 
 interface RetrieveConfig {
-  overrideUndefined?: boolean;
+  overrideUndefined?: boolean; // deprecated in favor of defaultOnUndefined
+  defaultOnUndefined?: boolean; // default: false
+  defaultOnFalsy?: boolean; // default: false
+  separator?: string; // default: '.'
 }
 
 interface FromRetrieve {

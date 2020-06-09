@@ -5,6 +5,16 @@ const TEST_OBJ_1 = {
     world: 'yes',
     me: false,
   },
+  my: {
+    falsy: {
+      number: 0,
+      negativeNumber: -0,
+      string: '',
+      nullObject: null,
+      undefinedObj: undefined,
+      notANumber: NaN,
+    }
+  },
   foo: {
     bar: [
       { baz: ':)'}
@@ -66,6 +76,13 @@ test('overrideUndefined config option works', function () {
   expect(retrieve('notDefined', 'hello', { overrideUndefined: true }).from(TEST_OBJ_1)).toBe('hello');
 })
 
+test('defaultOnUndefined config option', function () {
+  expect(retrieve('my.falsy.undefinedObj', '', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe('');
+  expect(retrieve('my.falsy.string', 'default', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe('');
+  expect(retrieve('my.falsy.notANumber', 'default', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe('');
+  expect(retrieve('my.foo.bar', 'default', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe('');
+})
+
 test('doesn\'t error on non object object values being passed in', function () {
   expect(retrieve('hello.world').from(undefined)).toBe(undefined);
   expect(retrieve('hello.world', 'foo').from(undefined)).toBe('foo');
@@ -78,3 +95,17 @@ test('doesn\'t error on non object object values being passed in', function () {
   expect(retrieve('hello.world.bar', 'foo').from(5)).toBe('foo');
 })
 
+test('defaultOnFalsy option returns default when return value is present in key but not truthy', function () {
+  expect(retrieve('my.falsy.number', 'default', { defaultOnFalsy: true }).from(TEST_OBJ_1)).toBe('default');
+  expect(retrieve('my.falsy.negativeNumber', 'default', { defaultOnFalsy: true }).from(TEST_OBJ_1)).toBe('default');
+  expect(retrieve('my.falsy.string', 'default', { defaultOnFalsy: true }).from(TEST_OBJ_1)).toBe('default');
+  expect(retrieve('my.falsy.nullObject', 'default', { defaultOnFalsy: true }).from(TEST_OBJ_1)).toBe('default');
+  expect(retrieve('my.falsy.undefinedObj', 'default', { defaultOnFalsy: true }).from(TEST_OBJ_1)).toBe('default');
+  expect(retrieve('my.falsy.notANumber', 'default', { defaultOnFalsy: true }).from(TEST_OBJ_1)).toBe('default');
+})
+
+test('separator param splits path properly', function () {
+  expect(retrieve('hello/world', '', { separator: '/' }).from(TEST_OBJ_1)).toBe('yes');
+  expect(retrieve('hello👏world', '', { separator: '👏' }).from(TEST_OBJ_1)).toBe('yes');
+  expect(retrieve('lets👏write👏good👏tests', '😎', { separator: '👏' }).from(TEST_OBJ_1)).toBe('😎');
+})
