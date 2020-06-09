@@ -79,8 +79,8 @@ test('overrideUndefined config option works', function () {
 test('defaultOnUndefined config option', function () {
   expect(retrieve('my.falsy.undefinedObj', '', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe('');
   expect(retrieve('my.falsy.string', 'default', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe('');
-  expect(retrieve('my.falsy.notANumber', 'default', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe('');
-  expect(retrieve('my.foo.bar', 'default', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe('');
+  expect(retrieve('my.falsy.notANumber', 'default', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe(NaN);
+  expect(retrieve('my.foo.bar', 'default', { defaultOnUndefined: true }).from(TEST_OBJ_1)).toBe('default');
 })
 
 test('doesn\'t error on non object object values being passed in', function () {
