@@ -4,8 +4,9 @@
     "Carl-Johan Kihl for writing https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c"
   ],
   "name": "object-retrieve",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Safely retrieve deeply nested values from an object.",
+  "keywords": ["safe", "object", "get", "safe get", "retrieve", "default value"],
   "license": "BSD-3-Clause",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
