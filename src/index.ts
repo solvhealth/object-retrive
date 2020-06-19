@@ -4,8 +4,7 @@ import { shouldReturnDefaultValue } from './util'
 function retrieve<T>(path: string | string[],
                      defaultValue?: T,
                      config?: RetrieveConfig): FromRetrieve<T> {
-  const _config = config || {};
-  const _path = Array.isArray(path) ? path : path.split(_config.separator || '.')
+  const _path = Array.isArray(path) ? path : path.split(config?.separator || '.')
 
   function from(obj: any): T {
     let retVal = obj
@@ -20,7 +19,7 @@ function retrieve<T>(path: string | string[],
       }
     }
 
-    if (shouldReturnDefaultValue(retVal, defaultValue, _config))
+    if (shouldReturnDefaultValue(retVal, defaultValue, config))
       retVal = defaultValue
 
     return retVal

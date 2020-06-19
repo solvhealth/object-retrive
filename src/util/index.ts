@@ -15,11 +15,11 @@ function isSameType(val1: any, val2: any): boolean {
 
 export function shouldReturnDefaultValue(retVal: any,
                                          defaultValue: any,
-                                         config: RetrieveConfig): boolean {
+                                         config?: RetrieveConfig): boolean {
 
-  if (config.guaranteeType && !isSameType(retVal, defaultValue)) return true
-  if (config.overrideUndefined || config.defaultOnUndefined) return typeof retVal === 'undefined'
-  if (config.defaultOnFalsy) return !retVal
+  if (config?.guaranteeType && !isSameType(retVal, defaultValue)) return true
+  if (config?.overrideUndefined || config?.defaultOnUndefined) return typeof retVal === 'undefined'
+  if (config?.defaultOnFalsy) return !retVal
 
   return false
 }
