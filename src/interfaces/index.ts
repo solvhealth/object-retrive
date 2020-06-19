@@ -1,16 +1,14 @@
 export interface RetrieveConfig {
-  overrideUndefined?: boolean;
   defaultOnFalsy?: boolean;
   defaultOnUndefined?: boolean;
+  guaranteeType?: boolean;
   separator?: string;
+  /**
+   * @deprecated
+   */
+  overrideUndefined?: boolean;
 }
 
-export interface FromRetrieve {
-  from: (obj: any) => any;
-}
-
-export interface FromBinding {
-  splitPath: Array<string>;
-  defaultValue?: any;
-  config?: RetrieveConfig;
+export interface FromRetrieve<T> {
+  from: (obj: any) => T;
 }

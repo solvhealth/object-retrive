@@ -35,9 +35,9 @@ $ npm install --save object-retrieve
 ## Usage
 
 ```typescript
-import retrieve from 'object-retrieve';
+import retrieve from 'object-retrieve'
 
-const myObj = { hello: { world: { foo: 'bar' } } };
+const myObj = { hello: { world: { foo: 'bar' } } }
 
 retrieve('hello.world.foo').from(myObj)
 >>> 'bar'
@@ -73,21 +73,58 @@ splits on.
 retrieve('lets👏get👏this👏bread', '🥖', { separator: '👏' }).from({ bread: '🍞'})
 ```
 
+For needs beyond this, simply pass in the path as an array of strings.
+
 ## API
 ``` typescript
 
 interface RetrieveConfig {
-  overrideUndefined?: boolean; // deprecated in favor of defaultOnUndefined
-  defaultOnUndefined?: boolean; // default: false
-  defaultOnFalsy?: boolean; // default: false
-  separator?: string; // default: '.'
+  defaultOnFalsy?: boolean;
+  defaultOnUndefined?: boolean;
+  guaranteeType?: boolean;
+  separator?: string;
+  /**
+   * @deprecated
+   */
+  overrideUndefined?: boolean;
 }
 
-interface FromRetrieve {
-  from: (obj: any) => any;
+interface FromRetrieve<T> {
+  from: (obj: any) => T;
 }
 
-function retrieve(path: string,
+function retrieve(path: string | string[],
                   defaultValue?: any, 
                   config?: RetrieveConfig): FromRetrieve
 ```
+
+### Guaranteed types
+If you work with Typescript, or want to have your IDE nicely autocomplete suggestions for you based
+on type hints, you might want to use the config option `guaranteeType`. I've included a
+separate file which exports the same retrieve function, just with the config option always set to
+true. 
+
+It works in the following way:
+```typescript
+import retrieve from 'object-retrieve/guaranteeType'
+// same as:
+import nonSafeRetrieve from 'object-retrieve'
+nonSafeRetrieve('my.value', 'foo', { guaranteeType: true })
+
+const myObj = {
+  foo: {
+    bar: 'this is a string'
+  }
+}
+
+retrieve('foo.bar', 'baz').from(myObj)
+>>> 'this is a string'
+
+retrieve('foo.bar', 4).from(myObj)
+>>> 4
+```
+
+Even though the key existed, since it didn't match the type that was given by the default value, the
+default value returns. The main use case for this is when dealing with inconsistent api's, allowing
+for less overhead of type checking when grabbing nested values from large data globs. That said, I'm
+sure you'll come up with much more creative uses than I can imagine.

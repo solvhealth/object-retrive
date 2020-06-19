@@ -1,40 +1,32 @@
-import { FromBinding, FromRetrieve, RetrieveConfig } from './interfaces'
-import { isValidNest, shouldReturnDefaultValue } from './util'
+import { FromRetrieve, RetrieveConfig } from './interfaces'
+import { shouldReturnDefaultValue } from './util'
 
-function from(this: FromBinding, obj: any): any {
-  const { splitPath, defaultValue, config } = this
-  let retVal = obj
+function retrieve<T>(path: string | string[],
+                     defaultValue?: T,
+                     config?: RetrieveConfig): FromRetrieve<T> {
+  const _config = config || {};
+  const _path = Array.isArray(path) ? path : path.split(_config.separator || '.')
 
-  for (let i = 0; i < splitPath.length; ++i) {
-    const key = splitPath[i]
-    if (key === undefined) break
+  function from(obj: any): T {
+    let retVal = obj
 
-    if (!isValidNest(retVal, key)) {
-      retVal = defaultValue
-      break
+    for (let i = 0; i < _path.length; ++i) {
+      const nextKey = _path[i]
+
+      if (retVal) retVal = retVal[nextKey]
+      else {
+        retVal = defaultValue
+        break
+      }
     }
 
-    retVal = retVal[key]
+    if (shouldReturnDefaultValue(retVal, defaultValue, _config))
+      retVal = defaultValue
+
+    return retVal
   }
 
-  if (shouldReturnDefaultValue(retVal, config))
-    retVal = defaultValue
-
-  return retVal
-}
-
-function retrieve(path: string,
-                  defaultValue?: any,
-                  config?: RetrieveConfig): FromRetrieve {
-
-  const splitPath = path.split(config && config.separator || '.')
-
-  return { from: from.bind({
-      splitPath,
-      defaultValue,
-      config,
-    }) }
+  return { from }
 }
 
 export { retrieve as default, FromRetrieve, RetrieveConfig }
-
